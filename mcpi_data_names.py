@@ -86,25 +86,39 @@ class BlockIDs():
   fence_gate          = 107
   glowing_obsidian    = 246
   nether_reactor_core = 247
+  
+  ##
+  # The following were not listed in the api-reference!
+  stairs_brick        = 108 # data: sets orientation 
+  stairs_stonebrick   = 109 # data: sets orientation 
+  stairs_sandstone    = 128 # data: sets orientation 
+  stairs_quartz       = 156 # data: sets orientation 
+  stairs_netherbrick  = 114 # data: sets orientation
+
+  quartz_block        = 155 # data: (0 smooth)
+
+
+
 # end class BlockIDs  
 
 class Data():
   null = 0
   
-  # wood and sapling, data value set type:
-  # (note - wood_planks are always oak in Pi Edition)
+  # wood and sapling, data value set type
+  #   (note - wood_planks are always oak in Pi Edition)
   oak     = 0
   spruce  = 1
   birch   = 2
   
   # stationary water or lava data sets depth 
-  # (note - stat water or lava may interact with touching blocks and thus flow or change)
-  deep     = 0  # default 0 is as full as it gets at three quarters of the block height
+  #  (note - stat water or lava may interact
+  #        with touching blocks and thus flow or change)
+  # default 0 is as full as it gets at three quarters of the block height
   lowLevel = (7, 6, 5, 4, 3, 2, 1) # lowLevel[0] is lowest, lowLevel[6] is quarter block
   
   # sandstone data sets type
   basic    = 0 
-  chiseled = 1 
+  chiseled = 1     # also for quartz_block
   smooth   = 2
   
   # bed data: different orientations: (0)-7 foot, 8-15 head of bed
@@ -144,7 +158,8 @@ class Data():
   red         = 14
   black       = 15
   
-  # stone_slab_double, aka stone_slab_dbl, data sets type of stone
+  # stone_slab_double (aka stone_slab_dbl)
+  #   data sets type of stone
   stone_slabs  = 0
   sandst       = 1 # looks the same as a normal block of sandstone
   wood         = 2 # looks the same as a normal block of wood planks
@@ -153,13 +168,29 @@ class Data():
   stonebrick   = 5 # looks the same as a normal block of stone_brick
   stone_smooth = 6
   
-  # stone_slab data sets type of stone, <8 lower half, >7 upper half
+  # stone_slab data sets type of stone,
+  #  <8 lower half, >7 upper half
   
   # tnt data: (0 inactive), 1 explode when hit
   
   # torch
   
   # stairs_wood
+  #       _cobblestone
+  #       _sandstone
+  #       _stonebrick
+  #       _netherbrick
+  #       _brick
+  #       _quartz
+  #   data set orientation
+  ascend_east   = 0
+  ascend_west   = 1
+  ascend_south  = 2
+  ascend_north  = 3
+  invert_east   = 4
+  invert_west   = 5
+  invert_south  = 6
+  invert_north  = 7
   
   # chest
   
@@ -176,9 +207,14 @@ class Data():
   # door_iron
   
   # stone_brick data sets variant
-  normal = 0
-  mossy = 1
+  normal  = 0
+  mossy   = 1
   cracked = 2
-  
-  
+
+  # quartz_block data sets variant
+  ''' some valid data names are declared above:
+           0 == basic == normal == null
+           1 == chiseled            '''
+  pillar = 2
+
 # end class Data  
