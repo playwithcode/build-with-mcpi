@@ -2,7 +2,6 @@
 # import stuff to play with and build on:
  
 from mcpi import minecraft
-from mcpi import vec3
 
 import mcpi_data_names # see https://github.com/playwithcode/build-with-mcpi
 
@@ -18,22 +17,24 @@ import random
 #   compatable Minecraft - e.g. "192.168.0.10"
 mc = minecraft.Minecraft.create("localhost")
 
-Vec3 = vec3.Vec3 # for 3D vector objects (x,y,z)
+Vec3 = minecraft.Vec3 # for 3D vector objects (x,y,z)
 
-bid = mcpi_data_names.BlockIDs  # to access names representing block id numbers
-dv = mcpi_data_names.Data       # to access words describing the data values
+bid = mcpi_data_names.BlockIDs   
+dv  = mcpi_data_names.Data
 
 t = 0.25 # time in seconds used to sleep at various points in our main program
+
+
 
 
 ########
 # functions to use in our main program
 
 def setCube(x, y, z, radius, block, data):
-  mc.setBlocks(x-radius, y, z-radius,     # coords for one corner of the cuboid
-               x+radius, y+(radius*2), z+radius,  # the opposite corner of the cuboid
-               block, data)  # block used to fill the cuboid (block id, data value)
-# end def
+  mc.setBlocks(x-radius, y, z-radius,     
+               x+radius, y+(radius*2), z+radius,  
+               block, data)  
+
 
 def stoneBrickFloor(x,y,z,radius):
   mc.setBlocks(x-radius, y-1, z-radius,     
@@ -45,15 +46,25 @@ def stoneBrickFloor(x,y,z,radius):
     dv_rand =     random.choice( (dv.mossy, dv.cracked) )
     mc.setBlock(x_rand, y-1, z_rand,
                 bid.stone_brick, dv_rand)
-  # end of for loop
-# end of def stoneFloor(radius)
 
-def stepPattnBlocks( origin, pattn, n_steps, b_id, b_dv ):
+
+def stepPattnBlocks( origin, pattn, n_steps, b_id, b_dv ): # use Vec3 for origin and pattn
   for i in range(n_steps):
     v = origin + (pattn * i) 
     mc.setBlock( v.x, v.y, v.z, b_id, b_dv )
-  # end for loop
-# end def stepPattnBlocks
+
+
+def randomStairs():
+  stairs = (bid.stairs_brick,
+            bid.stairs_cobblestone,
+            bid.stairs_netherbrick,
+            bid.stairs_quartz,
+            bid.stairs_sandstone,
+            bid.stairs_stonebrick,
+            bid.stairs_wood
+           )
+  return random.choice(stairs)
+            
 
 
 ########
@@ -72,36 +83,53 @@ mc.setBlock( x, y-1, z, bid.diamond_block )
 ## build steps
 
 num_steps  = 5
-block_id   = bid.stairs_quartz
+stop_looping = False
 
-# N
-start      = Vec3(x, y, z-2)
-step_pttn  = Vec3(0, 1, -1)
-block_data = dv.ascend_north
-stepPattnBlocks( start, step_pttn, 2*num_steps, block_id, block_data )
+while(not stop_looping):
+  block_id   = randomStairs()
+  time.sleep(t)
 
-# S
-start      = Vec3(x, y, z+2)
-step_pttn  = Vec3(0, 1, 2)
-block_data = dv.ascend_south
-stepPattnBlocks( start, step_pttn, num_steps, block_id, block_data )
+  # N
+  start      = Vec3(x, y, z-2)
+  step_pttn  = Vec3(0, 1, -1)
+  block_data = dv.ascend_north
+  stepPattnBlocks( start, step_pttn, 2*num_steps, block_id, block_data )
 
-start      = Vec3(x, y, z+2+1) #
-step_pttn  = Vec3(0, 1, 2)
-block_data = dv.invert_north #
-stepPattnBlocks( start, step_pttn, num_steps, block_id, block_data )
+  block_id   = randomStairs()
+  time.sleep(t)
 
-# E
-start      = Vec3(x+2, y, z)
-step_pttn  = Vec3(2, 1, 0)
-block_data = dv.ascend_east
-stepPattnBlocks( start, step_pttn, num_steps, block_id, block_data )
+  # S
+  start      = Vec3(x, y, z+2)
+  step_pttn  = Vec3(0, 1, 2)
+  block_data = dv.ascend_south
+  stepPattnBlocks( start, step_pttn, num_steps, block_id, block_data )
 
-# W
-start      = Vec3(x-2, y, z)
-step_pttn  = Vec3(-2, 1, 0)
-block_data = dv.ascend_west
-stepPattnBlocks( start, step_pttn, num_steps, block_id, block_data )
+  block_id   = randomStairs()
+  time.sleep(t)
 
+  start      = Vec3(x, y, z+2+1)  #
+  step_pttn  = Vec3(0, 1, 2)
+  block_data = dv.invert_north    #
+  stepPattnBlocks( start, step_pttn, num_steps, block_id, block_data )
 
+  block_id   = randomStairs()
+  time.sleep(t)
+
+  # E
+  start      = Vec3(x+2, y, z)
+  step_pttn  = Vec3(2, 1, 0)
+  block_data = dv.ascend_east
+  stepPattnBlocks( start, step_pttn, num_steps, block_id, block_data )
+
+  block_id   = randomStairs()
+  time.sleep(t)
+
+  # W
+  start      = Vec3(x-2, y, z)
+  step_pttn  = Vec3(-2, 1, 0)
+  block_data = dv.ascend_west
+  stepPattnBlocks( start, step_pttn, num_steps, block_id, block_data )
+
+  if mc.player.getTilePos() == Vec3(0,0,0):
+    stop_looping = True
 
