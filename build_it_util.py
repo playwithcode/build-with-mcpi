@@ -144,7 +144,7 @@ class Data():
     '''
 
     # grass_tall or foliage, data value set type of plant:
-    # (note - the API-reference used gives fern as 2, but sdf finds fern as 3)
+    # (note - the used API-reference gives fern as 2, but sdf finds fern as 3)
     # (note - unlike other data values that default to 0, this block defaults to grass)
     shrub   = 0
     grass   = 1  
@@ -254,10 +254,39 @@ class Data():
 
     # end class Data  
 
+
+########
+# instances of the block id and data value classes
+bid = BlockIDs   
+dv  = Data
+
 class BuildIt():
     mc = ''
     def __init__(self, mc_):
         self.mc = mc_
 
-    #def 
+    def centredCube(centre_x=0, centre_y=0, centre_z=0,
+                    radius=7, block_id=0, data_value=0):
+		start_x = centre_x - radius
+		start_y = centre_y - radius
+		start_z = centre_z - radius
+		end_x   = centre_x + radius
+		end_y   = centre_y + radius
+		end_z   = centre_z + radius
+		mc.setBlocks(start_x, start_y, start_z,     
+				     end_x, end_y, end_z,  
+				     block_id, data_value)  
+        #end def centredCube()
+
+
+    def stoneBrickFloor(x,y,z,radius):
+        mc.setBlocks(x-radius, y-1, z-radius,     
+		             x+radius, y-1, z+radius,     
+                     bid.stone_brick, dv.normal)
+        for i in range(2*radius*radius):
+            x_rand  = x + random.choice( range(0-radius,radius) )
+            z_rand  = z + random.choice( range(0-radius,radius) )
+            dv_rand =     random.choice( (dv.mossy, dv.cracked) )
+            mc.setBlock(x_rand, y-1, z_rand, bid.stone_brick, dv_rand)
+	    # end def stoneBrickFloor
     # end class BuildIt

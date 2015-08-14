@@ -3,29 +3,23 @@
  
 from mcpi import minecraft
 
-import build_it_util # see https://github.com/playwithcode/build-with-mcpi
+import build_it_util    # see https://github.com/playwithcode/build-with-mcpi
+import server           # originally from mcpipy, also part of build-with-mcpi
 
 import time
 import random
 
 ########
-# setup stuff global for the code below
+# setup global code stuff
 
-''' to run this program across a network,
-    change "localhost" below for the IP 
-    address of the computer running the
-    compatable Minecraft - e.g. "192.168.0.10" '''
+mc = minecraft.Minecraft.create(server.address)
 
-mc = minecraft.Minecraft.create("localhost")
-
-Vec3 = minecraft.Vec3 # for 3D vector objects (x,y,z)
+Vec3 = minecraft.Vec3   # for 3D vector objects (x,y,z)
 
 bid = build_it_util.BlockIDs   
 dv  = build_it_util.Data
 
-t = 0.25 # time in seconds used to sleep at various points in our main program
-
-
+t = 0.25 # a time value in seconds, can be used to sleep at points in our main program
 
 
 ########
@@ -47,7 +41,7 @@ def stoneBrickFloor(x,y,z,radius):
     dv_rand =     random.choice( (dv.mossy, dv.cracked) )
     mc.setBlock(x_rand, y-1, z_rand,
                 bid.stone_brick, dv_rand)
-
+# end def stoneBrickFloor
 
 def stepPattnBlocks( origin, pattn, n_steps, b_id, b_dv ): # use Vec3 for origin and pattn
   for i in range(n_steps):
@@ -85,7 +79,7 @@ stoneBrickFloor( x, y, z, rad )
 
 ##
 for i in range(16):
-    mc.setBlock(i,0,0,
+    mc.setBlock(i,0,i,
                 bid.half_slab, 
                 i)
 
@@ -104,9 +98,9 @@ types_of_half_slab = [dv.stone,
 
 i = 0
 for value in types_of_half_slab:
-    mc.setBlock(0,0,i,
+    mc.setBlock(i,0,i,
                 bid.half_slab, 
                 value)
-    i += 1
+    i -= 1
 
 
