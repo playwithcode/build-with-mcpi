@@ -18,48 +18,13 @@ Vec3 = minecraft.Vec3   # for 3D vector objects (x,y,z)
 
 bid = build_it_util.BlockIDs   
 dv  = build_it_util.Data
+buildit = build_it_util.BuildIt(mc)
 
 t = 0.25 # a time value in seconds, can be used to sleep at points in our main program
 
 
 ########
 # functions to use in our main program
-
-def setCube(x, y, z, radius, block, data):
-  mc.setBlocks(x-radius, y, z-radius,     
-               x+radius, y+(radius*2), z+radius,  
-               block, data)  
-
-
-def stoneBrickFloor(x,y,z,radius):
-  mc.setBlocks(x-radius, y-1, z-radius,     
-               x+radius, y-1, z+radius,     
-               bid.stone_brick, dv.normal)            
-  for i in range(2*radius*radius):
-    x_rand  = x + random.choice( range(0-radius,radius) )
-    z_rand  = z + random.choice( range(0-radius,radius) )
-    dv_rand =     random.choice( (dv.mossy, dv.cracked) )
-    mc.setBlock(x_rand, y-1, z_rand,
-                bid.stone_brick, dv_rand)
-# end def stoneBrickFloor
-
-def stepPattnBlocks( origin, pattn, n_steps, b_id, b_dv ): # use Vec3 for origin and pattn
-  for i in range(n_steps):
-    v = origin + (pattn * i) 
-    mc.setBlock( v.x, v.y, v.z, b_id, b_dv )
-
-
-def randomStairs():
-  stairs = (bid.stairs_brick,
-            bid.stairs_cobblestone,
-            bid.stairs_netherbrick,
-            bid.stairs_quartz,
-            bid.stairs_sandstone,
-            bid.stairs_stonebrick,
-            bid.stairs_wood
-           )
-  return random.choice(stairs)
-            
 
 
 ########
@@ -70,16 +35,14 @@ def randomStairs():
 ## clear around 0,0,0 and set a floor to build on
 
 x,y,z = 0,0,0
-rad = 16
-setCube( x, y, z, rad, bid.air, dv.null )
-stoneBrickFloor( x, y, z, rad )
-#mc.setBlock( x, y, z, bid.diamond_block )
-
+#x,y,z = 266,64,300
+buildit.centredCube(x, y, z, 20, bid.air, dv.null )
+buildit.stoneBrickFloor(x, y, z, 16)
 
 
 ##
 for i in range(16):
-    mc.setBlock(i,0,i,
+    mc.setBlock(x+i, y, z+i,
                 bid.half_slab, 
                 i)
 
@@ -98,7 +61,8 @@ types_of_half_slab = [dv.stone,
 
 i = 0
 for value in types_of_half_slab:
-    mc.setBlock(i,0,i,
+    print value
+    mc.setBlock(x+i, y, z+i,
                 bid.half_slab, 
                 value)
     i -= 1
