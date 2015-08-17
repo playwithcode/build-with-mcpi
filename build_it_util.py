@@ -9,7 +9,7 @@ import random
 ''' main API-reference used for block IDs and Data Values
      = http://www.stuffaboutcode.com/p/minecraft-api-reference.html
     extra stuff about these found through experimentation and play! '''
- 
+
 class BlockIDs():
     # id values for blocks
     air                 = 0
@@ -107,7 +107,7 @@ class BlockIDs():
     quartz_block        = 155 # data: (0 smooth),1 chiseled, 2 pillar
     
     # end class BlockIDs  
-
+bid = BlockIDs # local instance
 
 
 class Data():
@@ -253,15 +253,27 @@ class Data():
     pillar = 2
 
     # end class Data  
+dv  = Data # local instance
 
+class MyBlock():
+    def __init__(self, my_block_id=0, my_data_value=0):
+        self.bid = my_block_id
+        self.dv  = my_data_value
 
-########
-# instances of the block id and data value classes
-bid = BlockIDs   
-dv  = Data
+    def setBid(self, new_bid):
+        self.bid = new_bid
 
-class BuildIt():
-    mc = ''
+    def getBid(self):
+        return self.bid
+
+    def setDv(self, new_dv):
+        self.bid = new_dv
+
+    def getDv(self):
+        return self.dv
+
+class BuildIt:
+    # mc = ""
     def __init__(self, mc_):
         self.mc = mc_
 
@@ -294,4 +306,9 @@ class BuildIt():
             dv_rand =     random.choice( (dv.mossy, dv.cracked) )
             self.mc.setBlock(x_rand, fixed_y, z_rand, bid.stone_brick, dv_rand)
         # end def stoneBrickFloor
+
+
+
     # end class BuildIt
+
+
