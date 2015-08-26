@@ -3,7 +3,8 @@
  
 from mcpi import minecraft
 
-import mcpi_data_names # see https://github.com/playwithcode/build-with-mcpi
+import build_it_util # see https://github.com/playwithcode/build-with-mcpi
+import server           # originally from mcpipy, also part of build-with-mcpi
 
 import time
 import random
@@ -11,16 +12,12 @@ import random
 ########
 # setup stuff global for the code below
 
-# to run this program across a network,
-#   change "localhost" below for the IP 
-#   address of the computer running the  
-#   compatable Minecraft - e.g. "192.168.0.10"
-mc = minecraft.Minecraft.create("localhost")
+mc = minecraft.Minecraft.create(server.address)
 
 Vec3 = minecraft.Vec3 # for 3D vector objects (x,y,z)
 
-bid = mcpi_data_names.BlockIDs   
-dv  = mcpi_data_names.Data
+bid = build_it_util.BlockIDs
+dv  = build_it_util.Data
 
 t = 0.25 # time in seconds used to sleep at various points in our main program
 
